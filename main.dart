@@ -403,8 +403,8 @@ void main() {
 
   // 43. Defina uma classe Node que estende LinkedListEntry<Node>
   // com um campo valor. Crie uma LinkedList<Node> e adicione três
-  print('\n\n>> QUESTÃO 43 <<');
   // nós com valores 10, 20, 30.
+  print('\n\n>> QUESTÃO 43 <<');
   LinkedList<Node> linkedList = LinkedList<Node>();
   linkedList.add(Node(10));
   linkedList.add(Node(20));
