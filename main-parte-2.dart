@@ -91,6 +91,10 @@ void main() {
   // específicas (ex: "Email enviado!").
   {
     print('\n\n>> QUESTÃO 53 <<');
+    var email = Email();
+    var sms = SMS();
+    email.enviar();
+    sms.enviar();
   }
 
   // 54. Crie uma classe ContaBancaria com uma propriedade privada
@@ -102,6 +106,13 @@ void main() {
   // conta.sacar(600); // Erro: Saldo insuficiente
   {
     print('\n\n>> QUESTÃO 54 <<');
+    var conta = ContaBancaria();
+    conta.depositar(100);
+    conta.sacar(200);
+    conta.sacar(-1);
+    conta.sacar(0);
+    conta.sacar(10);
+    print(conta.saldo);
   }
 
   // 55. Crie uma classe Termometro com uma propriedade privada
@@ -109,6 +120,12 @@ void main() {
   // novaTemp) que só permite valores entre -50 e 100.
   {
     print('\n\n>> QUESTÃO 55 <<');
+    var termometro = Termometro();
+    termometro.ajustarTemperatura(-51);
+    termometro.ajustarTemperatura(101);
+    print(termometro.temperaturaC);
+    termometro.ajustarTemperatura(75);
+    print(termometro.temperaturaC);
   }
 
   // 56. Crie uma classe Retangulo com propriedades privadas _largura
@@ -119,6 +136,9 @@ void main() {
   // ret.altura = -5; // Erro: Valor inválido
   {
     print('\n\n>> QUESTÃO 56 <<');
+    var ret = Retangulo();
+    ret.largura = 10; // OK
+    ret.altura = -5; // Erro: Valor inválido
   }
 
   // 57. Crie uma classe Usuario com uma propriedade privada _email.
@@ -126,6 +146,11 @@ void main() {
   // lo.
   {
     print('\n\n>> QUESTÃO 57 <<');
+    var usuario = Usuario();
+    usuario.email = 'teste.com';
+    print(usuario.email);
+    usuario.email = 'teste@teste.com';
+    print(usuario.email);
   }
 
   // 58. Crie uma interface Autenticavel com o método bool
@@ -135,6 +160,9 @@ void main() {
   // print(user.autenticar('1234')); // true
   {
     print('\n\n>> QUESTÃO 58 <<');
+    var user = Usuario2();
+    print(user.autenticar('1234'));
+    print(user.autenticar('12344'));
   }
 
   // 59. Crie uma interface Calculavel com o método double
@@ -142,6 +170,10 @@ void main() {
   // Subtracao.
   {
     print('\n\n>> QUESTÃO 59 <<');
+    var soma = Soma();
+    print(soma.calcular(10, 5));
+    var subtracao = Subtracao();
+    print(subtracao.calcular(10, 5));
   }
 
   // 60. Crie uma classe abstrata Dispositivo com o método abstrato void
@@ -151,6 +183,8 @@ void main() {
   // dispositivo.ligar(); // Celular ligado!
   {
     print('\n\n>> QUESTÃO 60 <<');
+    Dispositivo dispositivo = Celular();
+    dispositivo.ligar(); // Celular ligado!
   }
 
   // 61. Crie uma classe abstrata FormaGeometrica com o método
@@ -158,6 +192,10 @@ void main() {
   // implementações específicas.
   {
     print('\n\n>> QUESTÃO 61 <<');
+    var triangulo = Triangulo(5, 7);
+    print(triangulo.calcularArea());
+    var retangulo = Retangulo2(2, 5);
+    print(retangulo.calcularArea());
   }
 }
 
@@ -227,7 +265,7 @@ abstract class Animal {
   String emitirSom();
 }
 
-class Gato extends Animal {
+class Gato implements Animal {
   @override
   String emitirSom() {
     return 'Miau!';
@@ -238,7 +276,7 @@ abstract class Forma {
   double calcularArea();
 }
 
-class Quadrado extends Forma {
+class Quadrado implements Forma {
   double lado;
 
   Quadrado(this.lado);
@@ -249,7 +287,7 @@ class Quadrado extends Forma {
   }
 }
 
-class Circulo extends Forma {
+class Circulo implements Forma {
   double raio;
 
   Circulo(this.raio);
@@ -257,5 +295,162 @@ class Circulo extends Forma {
   @override
   double calcularArea() {
     return pi * raio * raio;
+  }
+}
+
+abstract class Notificacao {
+  void enviar();
+}
+
+class Email implements Notificacao {
+  @override
+  void enviar() {
+    print('E-mail enviado!');
+  }
+}
+
+class SMS implements Notificacao {
+  @override
+  void enviar() {
+    print('SMS enviado!');
+  }
+}
+
+class ContaBancaria {
+  double _saldo = 0;
+  double get saldo => _saldo;
+
+  void depositar(double valor) {
+    _saldo += valor;
+  }
+
+  void sacar(double valor) {
+    if (valor <= 0) {
+      print('ERRO: Valor não pode ser negativo ou zero');
+      return;
+    }
+    if (valor > _saldo) {
+      print('ERRO: Saldo insuficiente');
+      return;
+    }
+    _saldo -= valor;
+  }
+}
+
+class Termometro {
+  double _temperaturaC = 0;
+  double get temperaturaC => _temperaturaC;
+
+  void ajustarTemperatura(double novaTemp) {
+    if (novaTemp < -50 || novaTemp > 100) {
+      print('A nova temperatura deve ser entre -50 e 100');
+      return;
+    }
+    _temperaturaC = novaTemp;
+  }
+}
+
+class Retangulo {
+  double _largura = 0;
+  double _altura = 0;
+
+  double get largura => _largura;
+  double get altura => _altura;
+
+  set largura(double valor) {
+    if (valor <= 0) {
+      print('ERRO: Valor inválido');
+      return;
+    }
+    _largura = valor;
+  }
+
+  set altura(double valor) {
+    if (valor <= 0) {
+      print('ERRO: Valor inválido');
+      return;
+    }
+    _altura = valor;
+  }
+}
+
+class Usuario {
+  String _email = '';
+  String get email => _email;
+
+  set email(String valor) {
+    if (!valor.contains('@')) {
+      print('ERRO: Email inválido');
+      return;
+    }
+    _email = valor;
+  }
+}
+
+abstract class Autenticavel {
+  bool autenticar(String senha);
+}
+
+class Usuario2 implements Autenticavel {
+  @override
+  bool autenticar(String senha) {
+    return senha == '1234';
+  }
+}
+
+abstract class Calculavel {
+  double calcular(double a, double b);
+}
+
+class Soma implements Calculavel {
+  @override
+  double calcular(double a, double b) {
+    return a + b;
+  }
+}
+
+class Subtracao implements Calculavel {
+  @override
+  double calcular(double a, double b) {
+    return a - b;
+  }
+}
+
+abstract class Dispositivo {
+  void ligar();
+}
+
+class Celular implements Dispositivo {
+  @override
+  void ligar() {
+    print('Celular ligado!');
+  }
+}
+
+abstract class FormaGeometrica {
+  double calcularArea();
+}
+
+class Triangulo implements FormaGeometrica {
+  double _base;
+  double _altura;
+
+  Triangulo(this._base, this._altura);
+
+  @override
+  double calcularArea() {
+    return (_base * _altura) / 2;
+  }
+}
+
+class Retangulo2 implements FormaGeometrica {
+  double _base;
+  double _altura;
+
+  Retangulo2(this._base, this._altura);
+
+  @override
+  double calcularArea() {
+    return _base * _altura;
   }
 }

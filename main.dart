@@ -425,7 +425,7 @@ void main() {
   }
 }
 
-class Node extends LinkedListEntry<Node> {
+final class Node extends LinkedListEntry<Node> {
   final int valor;
   Node(this.valor);
 }
